@@ -1,0 +1,5 @@
+total 24
+-rwxrwxrwx 1 mateus mateus 16880 Jul 10 10:24 a.out
+-rwxrwxrwx 1 mateus mateus    35 Jul  9 19:26 file1
+-rwxrwxrwx 1 mateus mateus     0 Jul 10 14:27 file2
+-rwxrwxrwx 1 mateus mateus   961 Jul 10 14:26 ft_pipex.c
