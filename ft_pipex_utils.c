@@ -34,17 +34,18 @@ void ft_execute_cmd(char *cmd[], char *path)
 
 void ft_pipex_primary(char *argv[], char *envp[], int *fd)
 {
-    char    *tmp;
+    int	fd_file;
     char    **cmd;
     char    *path;
 
-    tmp = ft_strjoin(ft_strjoin(argv[2], " "), argv[1]);
-    cmd = ft_split(tmp, ' ');
-    free(tmp);
+    cmd = ft_split(argv[2], ' ');
+    fd_file = open(argv[1], O_RDONLY);
+    dup2(fd_file, 0);
     dup2(fd[1], 1);
-    close(fd[1]);
     path = ft_find_path(cmd[0], envp);
     ft_execute_cmd(cmd, path);
+    close(fd_file);
+    close(fd[1]);
 }
 
 void ft_pipex_secondary(char *argv[], char *envp[], int *fd)

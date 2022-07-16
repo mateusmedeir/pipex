@@ -7,7 +7,7 @@ void ft_pipex(int argc, char *argv[], char *envp[])
 	int		w;
 
 	pipe(fd);
-	argc = 0;
+	argc++;
 	check = fork();
 
 	if (check == 0)
