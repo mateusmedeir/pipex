@@ -5,7 +5,7 @@
 #include <sys/wait.h>
 
 char *ft_find_path(char *cmd, char *envp[]);
-void ft_execute_cmd(char *cmd[], char *path);
+void ft_execute_cmd(char *cmd[], char *path, char *envp[]);
 void ft_pipex_primary(char *argv[], char *envp[], int *fd);
-void ft_pipex_secondary(char *argv[], char *envp[], int *fd);
+void ft_pipex_secondary(int argc, char *argv[], char *envp[], int *fd);
 void ft_pipex(int argc, char *argv[], char *envp[]);
