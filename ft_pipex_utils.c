@@ -1,6 +1,6 @@
 #include "pipex.h"
 
-char *ft_find_path(char *cmd, char *envp[])
+char *ft_find_path(char *cmd, char *envp[], int *fd)
 {
     char    **tmp;
     char    *path;
@@ -13,13 +13,19 @@ char *ft_find_path(char *cmd, char *envp[])
     tmp = ft_split(*envp, ':');
     counter= 0;
     check = -1;
-    while(check != 0)
+    while(check != 0 && tmp[counter])
     {
         path = ft_strjoin(ft_strjoin(tmp[counter++], "/"), cmd);
-        check = access(path, 0);
+        check = access(path, F_OK | X_OK);
         if (check != 0)
             free(path);
     }
+	if (!tmp[counter])
+	{
+		perror(cmd);
+		close(fd[0]);
+		close(fd[1]);
+	}
     return (path);
 }
 
@@ -38,11 +44,11 @@ void ft_pipex_primary(char *argv[], char *envp[], int *fd)
     char    **cmd;
     char    *path;
 
-    cmd = ft_split(argv[2], ' ');
-    fd_file = open(argv[1], O_RDONLY);
+    cmd = ft_split_except(argv[2], ' ');
+    path = ft_find_path(cmd[0], envp, fd);
+	fd_file = open(argv[1], O_RDONLY);
     dup2(fd_file, 0);
     dup2(fd[1], 1);
-    path = ft_find_path(cmd[0], envp);
     ft_execute_cmd(cmd, path, envp);
     close(fd_file);
     close(fd[1]);
@@ -54,11 +60,11 @@ void ft_pipex_secondary(int argc, char *argv[], char *envp[], int *fd)
     char    **cmd;
     char    *path;
 
-    cmd = ft_split(argv[3], ' ');
-    fd_file = open(argv[argc - 1], O_CREAT | O_RDWR | O_TRUNC, 00700);
+    cmd = ft_split_except(argv[3], ' ');
+    path = ft_find_path(cmd[0], envp, fd);
+	fd_file = open(argv[argc - 1], O_CREAT | O_RDWR | O_TRUNC, 00700);
     dup2(fd[0], 0);
     close(fd[0]);
     dup2(fd_file, 1);
-    path = ft_find_path(cmd[0], envp);
     ft_execute_cmd(cmd, path, envp);
 }

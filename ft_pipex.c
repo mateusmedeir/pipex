@@ -2,9 +2,8 @@
 
 void ft_pipex(int argc, char *argv[], char *envp[])
 {
-	int		fd[2];
+	pid_t		fd[2];
 	int		check;
-	int		w;
 
 	pipe(fd);
 	check = fork();
@@ -23,7 +22,8 @@ void ft_pipex(int argc, char *argv[], char *envp[])
 		else
 			close(fd[0]);
 	}
-	wait(&w);
+	waitpid(fd[1], NULL, 0);
+	waitpid(fd[0], NULL, 0);
 }
 
 int main(int argc, char *argv[], char *envp[])
