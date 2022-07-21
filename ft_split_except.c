@@ -58,16 +58,19 @@ static int	put_string(char **pointer, int split, char const *s, char c)
 	{
 		size++;
 		if (s[size + start] == 39 && start == 1)
+		{
+			start++;
 			break;
+		}
 	}
-	pointer[split] = ft_substr (s, start, size);
+	pointer[split] = ft_substr (s, start - (start > 0), size + (start == 1));
 	if (!pointer[split])
 	{
 		free_all (pointer, split);
 		return (-1);
 	}
 	if (start == 1)
-		start++;
+		--start;
 	return (size + start);
 }
 
