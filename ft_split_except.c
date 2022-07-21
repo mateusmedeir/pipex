@@ -6,7 +6,7 @@
 /*   By: mmedeiro <mmedeiro@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 17:03:28 by mmedeiro          #+#    #+#             */
-/*   Updated: 2022/07/20 09:48:24 by mmedeiro         ###   ########.fr       */
+/*   Updated: 2022/07/21 08:27:50 by mmedeiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ static int	put_string(char **pointer, int split, char const *s, char c)
 {
 	int	size;
 	int	start;
-	int check;
 
 	size = 0;
 	start = 0;

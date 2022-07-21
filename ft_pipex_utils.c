@@ -29,6 +29,7 @@ void ft_execute_cmd(char *cmd[], char *path, char *envp[])
     if (!path)
     {
 	    perror(cmd[0]);
+		exit(EXIT_FAILURE);
     }
     execve(path, cmd, envp);
 }

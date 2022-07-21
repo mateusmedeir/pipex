@@ -1,4 +1,4 @@
-SRCS	= ft_pipex.c ft_pipex_utils.c
+SRCS	= ft_pipex.c ft_pipex_utils.c ft_split_except.c
 
 OBJS	= ${SRCS:.c=.o}
 
