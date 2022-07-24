@@ -26,16 +26,23 @@ static int	how_many_splits(char const *s, char c)
 {
 	int	split;
 	int	counter;
+	int	check;
 
 	split = 0;
 	counter = 0;
+	check = 0;
 	while (s[counter])
 	{
-		if (s[counter] == c && (counter != 0 || s[counter - 1] != c))
+		if (s[counter] != c && check == 0)
+		{
 			split++;
+			check = 1;
+		}
+		else if (s[counter] == c)
+			check = 0;
 		counter++;
 	}
-	return (split + 1);
+	return (split);
 }
 
 static int	put_string(char **pointer, int split, char const *s, char c)
@@ -63,7 +70,7 @@ char	**ft_split(char const *s, char c)
 
 	split = 0;
 	max = how_many_splits(s, c);
-	pointer = (char **)malloc((max + 1) * sizeof(char *));
+	pointer = malloc((max + 1) * sizeof(char *));
 	if (!pointer)
 		return (NULL);
 	while (split < max && *s)

@@ -27,22 +27,26 @@ static int	how_many_splits(char const *s, char c)
 	int	split;
 	int	counter;
 	int	check;
+	int	check_exc;
 
 	split = 0;
 	counter = 0;
-	check = 0;
+	check_exc = 0;
 	while (s[counter])
 	{
-		if (s[counter] == 39 && check == 0)
-			check = 1;
-		else if (s[counter] == 39 && check == 1)
-			check = 0;
-		if (s[counter] == c && (counter != 0 || s[counter - 1] != c)
-				&& check == 0)
+		if (s[counter] == 39)
+			check_exc++;
+		if (s[counter] != c && check == 0)
+		{
 			split++;
+			check = 1;
+		}
+		else if (s[counter] == c)
+			check = 0;
 		counter++;
 	}
-	return (split + 1);
+	check_exc = check_exc / 2;
+	return (split - check_exc);
 }
 
 static int	put_string(char **pointer, int split, char const *s, char c)
@@ -60,7 +64,7 @@ static int	put_string(char **pointer, int split, char const *s, char c)
 		if (s[size + start] == 39 && start == 1)
 		{
 			start++;
-			break;
+			break ;
 		}
 	}
 	pointer[split] = ft_substr (s, start - (start > 0), size + (start == 1));
