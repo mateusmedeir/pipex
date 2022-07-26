@@ -6,7 +6,7 @@
 /*   By: mmedeiro <mmedeiro@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 17:03:28 by mmedeiro          #+#    #+#             */
-/*   Updated: 2022/07/21 08:27:50 by mmedeiro         ###   ########.fr       */
+/*   Updated: 2022/07/26 09:43:33 by mmedeiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,11 @@ static int	how_many_splits(char const *s, char c)
 
 	split = 0;
 	counter = 0;
+	check = 0;
 	check_exc = 0;
 	while (s[counter])
 	{
-		if (s[counter] == 39)
+		if(s[counter] == 39)
 			check_exc++;
 		if (s[counter] != c && check == 0)
 		{
@@ -45,37 +46,34 @@ static int	how_many_splits(char const *s, char c)
 			check = 0;
 		counter++;
 	}
-	check_exc = check_exc / 2;
-	return (split - check_exc);
+	return (split - (check_exc / 2));
 }
 
 static int	put_string(char **pointer, int split, char const *s, char c)
 {
 	int	size;
-	int	start;
+	int	check;
 
 	size = 0;
-	start = 0;
+	check = 0;
 	if (s[size] == 39)
-		start++;
-	while (s[size + start] != '\0' && (s[size + start] != c || start == 1))
+		check++;
+	while (s[size] != '\0' && (s[size] != c || check % 2 != 0))
 	{
 		size++;
-		if (s[size + start] == 39 && start == 1)
+		if (s[size] == 39 && check % 2 != 0)
 		{
-			start++;
+			check++;
 			break ;
 		}
 	}
-	pointer[split] = ft_substr (s, start - (start > 0), size + (start == 1));
+	pointer[split] = ft_substr (s, (check == 2), size - (check == 2));
 	if (!pointer[split])
 	{
 		free_all (pointer, split);
 		return (-1);
 	}
-	if (start == 1)
-		--start;
-	return (size + start);
+	return (size);
 }
 
 char	**ft_split_except(char const *s, char c)
@@ -87,7 +85,7 @@ char	**ft_split_except(char const *s, char c)
 
 	split = 0;
 	max = how_many_splits(s, c);
-	pointer = (char **)malloc((max + 1) * sizeof(char *));
+	pointer = malloc((max + 1) * sizeof(char *));
 	if (!pointer)
 		return (NULL);
 	while (split < max && *s)
