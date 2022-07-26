@@ -6,7 +6,7 @@
 
 char *ft_find_path(char *cmd, char *envp[]);
 void ft_execute_cmd(char *argv, char *envp[]);
-void ft_pipex_primary(char *argv[], char *envp[], int *fd);
-void ft_pipex_secondary(int argc, char *argv[], char *envp[], int *fd);
-void ft_pipex(int argc, char *argv[], char *envp[]);
+void ft_pipex_primary(char *argv, char *envp[], int *fd, int *fd_files);
+void ft_pipex_secondary(char *argv, char *envp[], int *fd, int *fd_files);
+void ft_pipex(char *argv[], char *envp[], int *fd_files);
 char    **ft_split_except(char const *s, char c);

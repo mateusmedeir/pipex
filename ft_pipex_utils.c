@@ -40,35 +40,19 @@ void ft_execute_cmd(char *argv, char *envp[])
     execve(path, cmd, envp);
 }
 
-void ft_pipex_primary(char *argv[], char *envp[], int *fd)
+void ft_pipex_primary(char *argv, char *envp[], int *fd, int *fd_files)
 {
-    int	fd_file;
-
-    fd_file = open(argv[1], O_RDONLY);
-    if (fd_file == -1)
-    {
-        perror(argv[1]);
-        exit(EXIT_FAILURE);
-    }
-    dup2(fd_file, 0);
-	close(fd_file);
+    dup2(fd_files[0], 0);
+	close(fd_files[0]);
     dup2(fd[1], 1);
 	close(fd[1]);
-    ft_execute_cmd(argv[2], envp);
+    ft_execute_cmd(argv, envp);
 }
 
-void ft_pipex_secondary(int argc, char *argv[], char *envp[], int *fd)
+void ft_pipex_secondary(char *argv, char *envp[], int *fd, int *fd_files)
 {
-    int     fd_file;
-
-    fd_file = open(argv[argc - 1], O_CREAT | O_RDWR | O_TRUNC, 00700);
-    if (fd_file == -1)
-    {
-	    perror(argv[argc - 1]);
-	    exit(EXIT_FAILURE);
-    }
     dup2(fd[0], 0);
     close(fd[0]);
-    dup2(fd_file, 1);
-    ft_execute_cmd(argv[3], envp);
+    dup2(fd_files[1], 1);
+    ft_execute_cmd(argv, envp);
 }

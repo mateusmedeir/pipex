@@ -1,9 +1,9 @@
 #include "pipex.h"
 
-void ft_pipex(int argc, char *argv[], char *envp[])
+void ft_pipex(char *argv[], char *envp[], int *fd_files)
 {
-	pid_t		fd[2];
-	int		check;
+	int	fd[2];
+	int	check;
 
 	pipe(fd);
 	check = fork();
@@ -11,23 +11,37 @@ void ft_pipex(int argc, char *argv[], char *envp[])
 	if (check == 0)
 	{
 		close(fd[0]);
-		ft_pipex_primary(argv, envp, fd);
+		ft_pipex_primary(argv[2], envp, fd, fd_files);
 	}
 	else
 	{
 		close(fd[1]);
 		check = fork();
 		if (check == 0)
-			ft_pipex_secondary(argc, argv, envp, fd);
+			ft_pipex_secondary(argv[3], envp, fd, fd_files);
 		else
 			close(fd[0]);
 	}
-	waitpid(fd[1], NULL, 0);
-	waitpid(fd[0], NULL, 0);
 }
 
 int main(int argc, char *argv[], char *envp[])
 {
-	ft_pipex(argc, argv, envp);
+	int	fd_files[2];
+
+	fd_files[0] = open(argv[1], O_RDONLY);
+	if (fd_files[0] == -1)
+    {
+        perror(argv[1]);
+        exit(EXIT_FAILURE);
+    }
+	fd_files[1] = open(argv[argc - 1], O_CREAT | O_RDWR | O_TRUNC, 00700);
+	if (fd_files[1] == -1)
+    {
+        perror(argv[argc - 1]);
+        exit(EXIT_FAILURE);
+    }
+	if (argc >= 5)
+		ft_pipex(argv, envp, fd_files);
+	waitpid(-1, NULL, 0);
 	return (0);
 }
