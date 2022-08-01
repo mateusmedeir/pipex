@@ -1,58 +1,71 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_pipex_utils.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mmedeiro <mmedeiro@student.42.rio>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/08/01 12:36:08 by mmedeiro          #+#    #+#             */
+/*   Updated: 2022/08/01 12:45:04 by mmedeiro         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "pipex.h"
 
-char *ft_find_path(char *cmd, char *envp[])
+void	ft_error_msg(char *str)
 {
-    char **full_path;
-    char    *tmp;
-    char    *path;
-    int     counter;
-
-    while (!ft_strnstr(*envp, "PATH", 5))
-        envp++;
-    *envp +=  5;
-    full_path = ft_split(*envp, ':');
-    counter= 0;
-    while(full_path[counter])
-    {
-	tmp = ft_strjoin(full_path[counter++], "/");
-        path = ft_strjoin(tmp, cmd);
-	free(tmp);
-        if (access(path, F_OK | X_OK) == 0)
-		return (path);
-        free(path);
-    }
-    return (NULL);
+	perror(str);
+	exit(EXIT_FAILURE);
 }
 
-void ft_execute_cmd(char *argv, char *envp[])
+void	ft_free_all(char *array[])
 {
-	char    **cmd;
-    char    *path;
+	int	counter;
 
-    cmd = ft_split_except(argv, ' ');
-    path = ft_find_path(cmd[0], envp);
-    if (!path)
-    {
-	    write(2, cmd[0], ft_strlen(cmd[0]));
-	    write(2, ": Command not found\n", 20);
-	    exit(EXIT_FAILURE);
-    }
-    execve(path, cmd, envp);
+	counter = 0;
+	while (array[counter])
+		free(array[counter++]);
+	free(array);
 }
 
-void ft_pipex_primary(char *argv, char *envp[], int *fd, int *fd_files)
+char	*ft_find_path(char *cmd, char *envp[])
 {
-    dup2(fd_files[0], 0);
-	close(fd_files[0]);
-    dup2(fd[1], 1);
-	close(fd[1]);
-    ft_execute_cmd(argv, envp);
+	char	**full_path;
+	char	*tmp;
+	char	*path;
+	int		counter;
+
+	if (ft_strchr(cmd, '/'))
+		return (cmd);
+	while (!ft_strnstr(*envp, "PATH", 4))
+		envp++;
+	full_path = ft_split(*envp + 5, ':');
+	counter = 0;
+	while (full_path[counter])
+	{
+		tmp = ft_strjoin(full_path[counter++], "/");
+		path = ft_strjoin(tmp, cmd);
+		free(tmp);
+		if (access(path, F_OK | X_OK) == 0)
+			return (path);
+		free(path);
+	}
+	ft_free_all(full_path);
+	return (NULL);
 }
 
-void ft_pipex_secondary(char *argv, char *envp[], int *fd, int *fd_files)
+void	ft_execute_cmd(char *argv, char *envp[])
 {
-    dup2(fd[0], 0);
-    close(fd[0]);
-    dup2(fd_files[1], 1);
-    ft_execute_cmd(argv, envp);
+	char	**cmd;
+	char	*path;
+
+	cmd = ft_split_except(argv, ' ');
+	path = ft_find_path(cmd[0], envp);
+	if (!path || access(path, F_OK | X_OK) != 0)
+	{
+		ft_error_msg(cmd[0]);
+		ft_free_all(cmd);
+	}
+	else
+		execve(path, cmd, envp);
 }

@@ -6,11 +6,11 @@
 /*   By: mmedeiro <mmedeiro@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 17:03:28 by mmedeiro          #+#    #+#             */
-/*   Updated: 2022/07/26 09:43:33 by mmedeiro         ###   ########.fr       */
+/*   Updated: 2022/08/01 13:27:58 by mmedeiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/libft.h"
+#include "pipex.h"
 
 static void	free_all(char **pointer, int split)
 {
@@ -35,7 +35,7 @@ static int	how_many_splits(char const *s, char c)
 	check_exc = 0;
 	while (s[counter])
 	{
-		if(s[counter] == 39)
+		if (s[counter] == 39)
 			check_exc++;
 		if (s[counter] != c && check == 0)
 		{
