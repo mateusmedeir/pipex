@@ -6,7 +6,7 @@
 /*   By: mmedeiro <mmedeiro@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 12:36:03 by mmedeiro          #+#    #+#             */
-/*   Updated: 2022/08/01 12:49:33 by mmedeiro         ###   ########.fr       */
+/*   Updated: 2022/08/02 11:53:36 by mmedeiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	ft_pipex_primary(char *argv, char *envp[])
 {
-	int	fd[2];
-	int	check;
+	int		fd[2];
+	pid_t	check;
 
 	pipe(fd);
 	check = fork();
