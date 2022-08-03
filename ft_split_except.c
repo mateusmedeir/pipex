@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_split.c                                         :+:      :+:    :+:   */
+/*   ft_split_except.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mmedeiro <mmedeiro@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 17:03:28 by mmedeiro          #+#    #+#             */
-/*   Updated: 2022/05/30 13:04:14 by mmedeiro         ###   ########.fr       */
+/*   Updated: 2022/08/03 09:03:44 by mmedeiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,20 +22,20 @@ static void	free_all(char **pointer, int split)
 	free (pointer);
 }
 
-static int	check_quote(char const *s, int pos)
+static int  check_quote(char const *s)
 {
-	int	counter;
-	char	quote;
+	int counter;
+	char    quote;
 
 	counter = 1;
-	quote = s[pos];
-	while (s[pos + counter])
+	quote = s[0];
+	while (s[counter])
 	{
-		if (s[pos + counter] == quote)
-			return (pos + counter + 1);
+		if (s[counter] == quote)
+			return (counter);
 		counter++;
 	}
-	return (pos);
+	return (0);
 }
 
 static int	how_many_splits(char const *s, char c)
@@ -49,13 +49,9 @@ static int	how_many_splits(char const *s, char c)
 	check = 0;
 	while (s[counter])
 	{
-		if (s[counter] == 34 || s[counter] == 39)
-		{
-			counter = check_quote(s, counter);
-			if (s[counter] != 34 && s[counter] != 39)
-				counter--;
-		}
-		else if (s[counter] != c && check == 0)
+		if ((s[counter] == 34 || s[counter] == 39) && check_quote(s + counter) > 0)
+			counter += check_quote(s + counter);
+		if (s[counter] != c && check == 0)
 		{
 			split++;
 			check = 1;
@@ -74,19 +70,15 @@ static int	put_string(char **pointer, int split, char const *s, char c)
 	size = 0;
 	while (s[size] != '\0' && s[size] != c)
 	{
-		if (s[size] == 34 || s[size] == 39)
+		if ((s[size] == 34 || s[size] == 39) && check_quote(s + size) > 0)
 		{
-			size = check_quote(s, size);
-			if (s[size] != 34 && s[size] != 39)
-			{
-				s++;
-				size -= 2;
-				break ;
-			}
+			size = check_quote(s + size) - 1;
+			s++;
+			break ;
 		}
 		size++;
 	}
-	pointer[split] = ft_substr (s, 0, size - (s[size] == 34 || s[size] == 39));
+	pointer[split] = ft_substr (s, 0, size);
 	if (!pointer[split])
 	{
 		free_all (pointer, split);
