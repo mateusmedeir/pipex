@@ -55,7 +55,7 @@ static int	how_many_splits(char const *s, char c)
 			if (s[counter] != 34 && s[counter] != 39)
 				counter--;
 		}
-		if (s[counter] != c && check == 0)
+		else if (s[counter] != c && check == 0)
 		{
 			split++;
 			check = 1;
