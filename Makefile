@@ -6,24 +6,28 @@ CC		= cc
 AR		= ar rc
 RM		= rm -f
 O		= -o
+C		= -c
 
-FLAGS	= -Wall -Wextra -Werror -c
+FLAGS	= -Wall -Wextra -Werror
 
 NAME	= libftpipex.a
 
 LIBFT	= libft.a
 
+PIPEX	= -o pipex -L. -lftpipex
+
 all:		$(NAME)
 
 $(NAME):	${LIBFT} ${OBJS}
 			${AR} $(NAME) ${OBJS}
+			${CC} ${FLAGS} ${SRCS} ${PIPEX}
 
 ${LIBFT}:	
 			@cd libft/ && make && cd ../
 			@cp libft/${LIBFT} . && mv ${LIBFT} libftpipex.a
 
 .c.o:		${SRCS}
-			${CC} ${FLAGS} $< ${O} $(<:.c=.o)
+			${CC} ${FLAGS} ${C} $< ${O} $(<:.c=.o)
 
 clean:
 			${RM} ${OBJS}
