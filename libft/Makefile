@@ -7,7 +7,7 @@ OBJS		= ${SRCS:.c=.o}
 OBJS_BONUS	= ${SRCS_BONUS:.c=.o}
 
 AR			= ar rc
-GCC			= gcc
+CC			= cc
 RM			= rm -f
 O			= -o
 
@@ -21,10 +21,10 @@ $(NAME):	${OBJS}
 			${AR} ${NAME} ${OBJS}
 
 .c.o:		${SRCS}
-			${GCC} ${FLAGS} $< ${O} $(<:.c=.o)
+			${CC} ${FLAGS} $< ${O} $(<:.c=.o)
 
 bonus:		all
-			${GCC} ${FLAGS} ${SRCS_BONUS}
+			${CC} ${FLAGS} ${SRCS_BONUS}
 			${AR} ${NAME} ${OBJS_BONUS}
 
 clean:

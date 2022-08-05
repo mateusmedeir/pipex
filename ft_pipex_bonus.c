@@ -62,7 +62,7 @@ int	main(int argc, char *argv[], char *envp[])
 {
 	int	fd_files[2];
 
-	if (argc == 5)
+	if (argc >= 5)
 	{
 		fd_files[0] = open(argv[1], O_RDONLY);
 		if (fd_files[0] == -1)
