@@ -14,16 +14,18 @@ NAME	= libftpipex.a
 
 LIBFT	= libft.a
 
-PIPEX	= -o pipex -L. -lftpipex
+PIPEX	= pipex
+
+FTPIPEX	= -L. -lftpipex
 
 all:		$(NAME)
 
 $(NAME):	${LIBFT} ${OBJS}
 			${AR} $(NAME) ${OBJS}
-			${CC} ${FLAGS} ${SRCS} ${PIPEX}
+			${CC} ${FLAGS} ${SRCS} ${O} ${PIPEX} ${FTPIPEX}
 
 ${LIBFT}:	
-			@cd libft/ && make && cd ../
+			@make -C libft
 			@cp libft/${LIBFT} . && mv ${LIBFT} libftpipex.a
 
 .c.o:		${SRCS}
@@ -31,9 +33,11 @@ ${LIBFT}:
 
 clean:
 			${RM} ${OBJS}
+			@make clean -C libft
 
 fclean:		clean
-			${RM} ${NAME}
+			${RM} ${NAME} ${PIPEX}
+			@${RM} libft/${LIBFT}
 
 re:			fclean all
 
