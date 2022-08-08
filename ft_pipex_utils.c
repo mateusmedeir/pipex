@@ -6,7 +6,7 @@
 /*   By: mmedeiro <mmedeiro@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 12:36:08 by mmedeiro          #+#    #+#             */
-/*   Updated: 2022/08/01 12:45:04 by mmedeiro         ###   ########.fr       */
+/*   Updated: 2022/08/08 10:06:38 by mmedeiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,11 +61,15 @@ void	ft_execute_cmd(char *argv, char *envp[])
 
 	cmd = ft_split_except(argv, ' ');
 	path = ft_find_path(cmd[0], envp);
-	if (!path || access(path, F_OK | X_OK) != 0)
+	if (access(path, F_OK | X_OK) != 0 && ft_strchr(cmd[0], '/'))
 	{
-		ft_error_msg(cmd[0]);
+		perror(cmd[0]);
 		ft_free_all(cmd);
+		exit(EXIT_FAILURE);
 	}
-	else
-		execve(path, cmd, envp);
+	execve(path, cmd, envp);
+	ft_putstr_fd(cmd[0], 2);
+	ft_putstr_fd(": Command not found\n", 2);
+	ft_free_all(cmd);
+	exit(EXIT_FAILURE);
 }
