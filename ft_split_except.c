@@ -6,7 +6,7 @@
 /*   By: mmedeiro <mmedeiro@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 17:03:28 by mmedeiro          #+#    #+#             */
-/*   Updated: 2022/08/03 09:03:44 by mmedeiro         ###   ########.fr       */
+/*   Updated: 2022/08/08 09:57:18 by mmedeiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,10 @@ static void	free_all(char **pointer, int split)
 	free (pointer);
 }
 
-static int  check_quote(char const *s)
+static int	check_quote(char const *s)
 {
-	int counter;
-	char    quote;
+	int		counter;
+	char	quote;
 
 	counter = 1;
 	quote = s[0];
@@ -49,7 +49,8 @@ static int	how_many_splits(char const *s, char c)
 	check = 0;
 	while (s[counter])
 	{
-		if ((s[counter] == 34 || s[counter] == 39) && check_quote(s + counter) > 0)
+		if ((s[counter] == 34 || s[counter] == 39)
+			&& check_quote(s + counter) > 0)
 			counter += check_quote(s + counter);
 		if (s[counter] != c && check == 0)
 		{
