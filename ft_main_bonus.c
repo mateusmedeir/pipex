@@ -6,7 +6,7 @@
 /*   By: mmedeiro <mmedeiro@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 09:55:25 by mmedeiro          #+#    #+#             */
-/*   Updated: 2022/08/08 09:56:02 by mmedeiro         ###   ########.fr       */
+/*   Updated: 2022/08/08 10:10:44 by mmedeiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,6 @@ int	main(int argc, char *argv[], char *envp[])
 		ft_pipex(argc, argv, envp, fd_files);
 	}
 	else
-		write(2, "Too few arguments\n", 18);
+		write(2, "Wrong arguments\n", 16);
 	return (0);
 }
