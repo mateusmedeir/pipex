@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_main_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmedeiro <mmedeiro@student.42.rio>         +#+  +:+       +#+        */
+/*   By: matlopes <matlopes@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/08 09:55:25 by mmedeiro          #+#    #+#             */
-/*   Updated: 2022/08/08 10:10:44 by mmedeiro         ###   ########.fr       */
+/*   Created: 2023/11/21 12:20:18 by matlopes          #+#    #+#             */
+/*   Updated: 2023/11/21 12:20:20 by matlopes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,6 @@ int	main(int argc, char *argv[], char *envp[])
 		ft_pipex(argc, argv, envp, fd_files);
 	}
 	else
-		write(2, "Wrong arguments\n", 16);
+		ft_putstr_fd("Wrong arguments\n", 2);
 	return (0);
 }

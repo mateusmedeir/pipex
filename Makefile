@@ -1,51 +1,51 @@
-PIPEX		= ft_main.c
-
-PIPEX_BONUS	= ft_main_bonus.c
-
-SRCS		= ft_pipex.c ft_pipex_utils.c ft_split_except.c
-
-OBJS		= ${SRCS:.c=.o}
-
-CC			= cc
-AR			= ar rc
-RM			= rm -f
-O			= -o
-C			= -c
-
-FLAGS		= -Wall -Wextra -Werror
-
 NAME		= pipex
 
 BONUS		= pipex_bonus
 
-LIBFTPIPEX	= libftpipex.a
+SRCS_M		= ft_main.c
 
-LIBFT		= libft.a
+SRCS_B		= ft_main_bonus.c
+
+SRCS_F		= ft_pipex.c 	    \
+			  ft_pipex_utils.c  \
+			  ft_split_except.c
+
+OBJS_M		= $(SRCS_M:.c=.o)
+
+OBJS_B		= $(SRCS_B:.c=.o)
+
+OBJS_F		= $(SRCS_F:.c=.o)
+
+LIBFT		= libft/libft.a
+
+CC			= cc
+AR			= ar rc
+RM			= rm
+FLAGS		= -Wall -Wextra -Werror
 
 all:			$(NAME)
 
-.c.o:			${SRCS}
-				${CC} ${FLAGS} ${C} $< ${O} $(<:.c=.o)
+$(NAME):		$(LIBFT) $(OBJS_M) $(OBJS_F)
+				$(CC) $(FLAGS) $(OBJS_M) $(OBJS_F) -o $(NAME) -Llibft -lft
 
-${LIBFTPIPEX}:	${OBJS}
-				make -C libft && cp libft/${LIBFT} ${LIBFTPIPEX}
-				${AR} ${LIBFTPIPEX} ${OBJS}
+.c.o:
+				$(CC) $(FLAGS) -c $< -o $(<:.c=.o)
 
-$(NAME):		${LIBFTPIPEX}
-				${CC} ${FLAGS} ${PIPEX} ${O} $(NAME) -L. -lftpipex
-
-$(BONUS):		${LIBFTPIPEX}
-				${CC} ${FLAGS} ${PIPEX_BONUS} ${O} $(BONUS) -L. -lftpipex
+$(LIBFT):
+				make -C libft
 
 bonus:			$(BONUS)
 
+$(BONUS):		$(LIBFT) $(OBJS_B) $(OBJS_F)
+				$(CC) $(FLAGS) $(OBJS_B) $(OBJS_F) -o $(BONUS) -Llibft -lft
+
 clean:
-				${RM} ${OBJS}
+				$(RM) -f $(OBJS_M) $(OBJS_B) $(OBJS_F)
 				make clean -C libft
 
 fclean:			clean
-				${RM} ${LIBFTPIPEX} $(NAME) $(BONUS)
-				${RM} libft/${LIBFT}
+				$(RM) -f $(NAME) $(BONUS)
+				$(RM) -f $(LIBFT)
 
 re:				fclean all
 

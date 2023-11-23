@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmedeiro <mmedeiro@student.42.rio>         +#+  +:+       +#+        */
+/*   By: matlopes <matlopes@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/01 13:28:10 by mmedeiro          #+#    #+#             */
-/*   Updated: 2022/08/01 13:28:32 by mmedeiro         ###   ########.fr       */
+/*   Created: 2023/11/21 12:21:00 by matlopes          #+#    #+#             */
+/*   Updated: 2023/11/21 12:21:01 by matlopes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,12 @@
 # define PIPEX_H
 
 # include "libft/libft.h"
-# include <unistd.h>
 # include <fcntl.h>
 # include <sys/wait.h>
 # include <stdio.h>
 
 void	ft_error_msg(char *str);
-void	ft_free_all(char *array[]);
+void    ft_free_all(char *array[]);
 char	*ft_find_path(char *cmd, char *envp[]);
 void	ft_execute_cmd(char *argv, char *envp[]);
 void	ft_pipex(int argc, char *argv[], char *envp[], int *fd_files);
